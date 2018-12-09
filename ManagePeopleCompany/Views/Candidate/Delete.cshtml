@@ -1,0 +1,82 @@
+﻿@model ManagePeopleCompany.Models.Candidate
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Candidate</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            ФИО
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.FullName)
+        </dd>
+
+        <dt>
+            HR-менеджер
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.Person.FullName)
+        </dd>
+
+        <dt>
+            Статус
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status.TitleStatus)
+        </dd>
+
+        <dt>
+            Связь
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Coming.TitleComing)
+            @Html.DisplayFor(model => model.Connection.TitleConnection)
+        </dd>
+
+        <dt>
+            Дата интервью
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateInterview)
+        </dd>
+
+        <dt>
+            Срок принятия решения
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DecisionTime)
+        </dd>
+
+        <dt>
+            Решение
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Answer.TitleAnswers)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

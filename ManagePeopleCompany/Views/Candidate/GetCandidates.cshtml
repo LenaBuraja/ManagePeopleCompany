@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ManagePeopleCompany.Models.Candidate>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Person.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employee.Person.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status.TitleStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Person.Position.TitlePosition)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Person.Experience)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Person.Pay)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Person.Email)
+        </td>
+        <td>
+            <a href='@Url.Action("Details", new { id = item.Id })'>
+                <img src='@Url.Content("~/images/view.png")' height="30" width="30" />
+            </a>
+            <a href='@Url.Action("Edit", new { id = item.Id })'>
+                <img src='@Url.Content("~/images/edit.png")' height="30" width="30" />
+            </a>
+            <a href='@Url.Action("Delete", new { id = item.Id })'>
+                <img src='@Url.Content("~/images/delete.png")' height="30" width="30" />
+            </a>
+        </td>
+    </tr>
+}
+
+

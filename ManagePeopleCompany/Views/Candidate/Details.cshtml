@@ -1,0 +1,129 @@
+﻿@model ManagePeopleCompany.Models.Candidate
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View</h2>
+
+<div>
+    <h3>Candidate</h3>
+    <dl class="dl-horizontal">
+        <dt>
+            ФИО
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Person.FullName)
+        </dd>
+        <dt>
+            Телефон
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Person.Phone)
+        </dd>
+        <dt>
+            <p>E-mail</p>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Person.Email)
+        </dd>
+        <dt>
+            <p>Skype</p>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Person.Skype)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <h4>Взаимодействие</h4>
+    <dl class="dl-horizontal">
+        <dt>
+            Статус
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status.TitleStatus)
+        </dd>
+        <dt>
+            Источник
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Coming.TitleComing)
+
+            @Html.DisplayFor(model => model.Connection.TitleConnection)
+        </dd>
+        <dt>
+            Анкета
+        </dt>
+        <dd>
+            @Html.ActionLink("download file", "download")
+        </dd>
+        <dt>
+            Тестовое задание
+        </dt>
+        <dd>
+            @Html.ActionLink("download file", "download")
+        </dd>
+        <dt>
+            Дата интервью
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateInterview)
+        </dd>
+        <dt>
+            Срок принятия решения
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DecisionTime)
+        </dd>
+        <dt>
+            Решение
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Answer.TitleAnswers)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <h4>Информация</h4>
+    <dl class="dl-horizontal">
+        <dt>
+            Позиция
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Person.Position.TitlePosition)
+        </dd>
+        <dt>
+            Зарплата
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Person.Pay)
+        </dd>
+        <dt>
+            Опыт
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Person.Experience)
+        </dd>
+        <dt>
+            <p>HR</p>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Employee.Person.FullName)
+        </dd>
+        <dt>
+            Резюме
+        </dt>
+        <dd>
+            @*@Html.DisplayFor(model => model.Person.Phone)*@
+        </dd>
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

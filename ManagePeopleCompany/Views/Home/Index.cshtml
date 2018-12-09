@@ -1,0 +1,85 @@
+﻿@model IEnumerable<ManagePeopleCompany.Models.Person>
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+Welcome @HttpContext.Current.User.Identity.Name
+Position @HttpContext.Current.Request.Cookies["positionUser"].Value
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("Logout", "User", FormMethod.Post, new { id = "logoutForm" }))
+    {
+        <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+    }
+}
+
+<h2>List People company</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            ФИО
+        </th>
+        <th>
+            Позиция
+        </th>
+        <th>
+            Опыт
+        </th>
+        <th>
+            Телефон
+        </th>
+        <th>
+            <p>Email</p>
+        </th>
+        <th>
+            Зарплата
+        </th>
+        <th>
+            <p>Skype</p>
+        </th>
+        <th>
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Position.TitlePosition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Experience)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Skype)
+            </td>
+            <td>
+                <a href='@Url.Action("EditPeople", new { id = item.Id })'>
+                    <img src='@Url.Content("~/images/edit.png")' height="30" width="30" />
+                </a> |
+                <a href='@Url.Action("Delete", new { id = item.Id })'>
+                    <img src='@Url.Content("~/images/delete.png")' height="30" width="30" />
+                </a>
+            </td>
+        </tr>
+    }
+
+</table>
+<div>
+    @Html.ActionLink("Add person", "CreatePerson", new { })
+</div>
