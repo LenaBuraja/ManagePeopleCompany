@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ManagePeopleCompany.Models.Person>
+
+@{
+    Layout = null;
+}
+
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Position.TitlePosition)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Experience)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        @if (@HttpContext.Current.Request.Cookies["positionUser"].Value == "Менеждер")
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.Pay)
+            </td>
+        }
+        <td>
+            @Html.DisplayFor(modelItem => item.Skype)
+        </td>
+        @if (@HttpContext.Current.Request.Cookies["positionUser"].Value == "Менеждер")
+        {
+            <td>
+                <a href='@Url.Action("EditPeople", new { id = item.Id })'>
+                    <img src='@Url.Content("~/images/edit.png")' height="30" width="30" />
+                </a> |
+                <a href='@Url.Action("Delete", new { id = item.Id })'>
+                    <img src='@Url.Content("~/images/delete.png")' height="30" width="30" />
+                </a>
+            </td>
+        }
+    </tr>
+}

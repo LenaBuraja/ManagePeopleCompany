@@ -17,7 +17,42 @@ namespace ManagePeopleCompany.Controllers
         // GET: People
         public ActionResult Index()
         {
-            var people = db.Persons.Include(p => p.Position);
+            Position addPosition = new Position { TitlePosition = "Все", Id = -1 };
+            List<Position> positionList = db.Positions.ToList();
+            positionList.Add(addPosition);
+            ViewBag.filterPosition = positionList;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Index(int filterPosition, string filterFN, string filterLN)
+        {
+            Position addPosition = new Position { TitlePosition = "Все", Id = -1 };
+            List<Position> positionList = db.Positions.ToList();
+            positionList.Add(addPosition);
+            ViewBag.filterPosition = positionList;
+            ViewBag.filterFN = filterFN;
+            ViewBag.filterLN = filterLN;
+            return View();
+        }
+
+        public ActionResult GetPeople(int? filterPosition = null, string filterFN = null, string filterLN = null)
+        {
+            IQueryable<Person> people = db.Persons;
+            if (filterPosition != null && filterPosition >= 0)
+            {
+                people = people.Where(c => c.PositionID == filterPosition);
+            }
+            if (filterFN != null)
+            {
+                people = people.Where(c => c.FirstName.Contains(filterFN));
+            }
+
+            if (filterLN != null)
+            {
+                people = people.Where(c => c.LastName.Contains(filterLN));
+            }
+
             return View(people.ToList());
         }
 

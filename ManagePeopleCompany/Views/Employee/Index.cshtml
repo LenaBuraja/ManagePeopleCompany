@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    AjaxOptions ajaxOptions = new AjaxOptions
+    {
+        UpdateTargetId = "employees",
+        Url = Url.Action("GetEmployees")
+    };
 }
 
 <h2>Index</h2>
@@ -10,44 +15,29 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            <p>ФИО</p>
-        </th>
-        <th>
-            Сотрудник
-        </th>
-        <th>
-            Дата принятия на работу
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Person.FullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Person.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateEnrollment)
-        </td>
-        <td>
-            <a href='@Url.Action("Edit", new { id = item.Id })'>
-                <img src='@Url.Content("~/images/edit.png")' height="30" width="30" />
-            </a> |
-            <a href='@Url.Action("Delete", new { id = item.Id })'>
-                <img src='@Url.Content("~/images/delete.png")' height="30" width="30" />
-            </a>
-
-            @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
-            @*@Html.ActionLink("Details", "Details", new { id=item.Id }) |*@
-            @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
-        </td>
-    </tr>
-}
-
-</table>
+<div>
+    @using (Ajax.BeginForm(ajaxOptions))
+    {
+        @Html.DropDownList("filterPosition", new SelectList(ViewBag.filterPosition, "Id", "TitlePosition", -1), htmlAttributes: new { @class = "form-control" })
+        <input type="text" name="filterLN" value="@ViewBag.filterLN" placeholder="Найти по фамилии" />
+        <input type="text" name="filterFN" value="@ViewBag.filterFN" placeholder="Найти по имени" />
+        <button type="submit">Отобразить</button>
+        <table class="table">
+            <tr>
+                <th>
+                    <p>ФИО</p>
+                </th>
+                <th>
+                    Сотрудник
+                </th>
+                <th>
+                    Дата принятия на работу
+                </th>
+                <th></th>
+            </tr>
+            <tbody id="employees">
+                @Html.Action("GetEmployees")
+            </tbody>
+        </table>
+    }
+</div>

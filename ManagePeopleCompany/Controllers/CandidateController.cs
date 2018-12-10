@@ -14,29 +14,6 @@ namespace ManagePeopleCompany.Controllers
     {
         private MPC_Context db = new MPC_Context();
 
-        // GET: Candidates
-        //public ActionResult Index(int? selectPosition, int? selectStatus)
-        //{
-        //    var candidates = db.Candidates.Include(c => c.Employee).Include(c => c.Coming).Include(c => c.Connection).Include(c => c.Status).Include(c => c.Person);
-        //    if (selectStatus != -1 && selectStatus != null)
-        //    {
-        //        candidates = candidates.Where(f => f.StatusID == selectStatus);
-        //    }
-        //    if (selectPosition != -1 && selectPosition != null)
-        //    {
-        //        candidates = candidates.Where(f => f.Person.PositionID == selectPosition);
-        //    }
-        //    Status addStatus = new Status { TitleStatus = "Все", Id = -1 };
-        //    List<Status> statusList = db.Statuses.ToList();
-        //    statusList.Add(addStatus);
-        //    ViewBag.StatusesList = statusList;
-        //    Position addPosition = new Position { TitlePosition = "Все", Id = -1 };
-        //    List<Position> positionList = db.Positions.ToList();
-        //    positionList.Add(addPosition);
-        //    ViewBag.PositionList = positionList;
-        //    return View(candidates.ToList());
-        //}
-
         public ActionResult Index()
         {
             Status addStatus = new Status { TitleStatus = "Все", Id = -1 };
@@ -46,12 +23,12 @@ namespace ManagePeopleCompany.Controllers
             Position addPosition = new Position { TitlePosition = "Все", Id = -1 };
             List<Position> positionList = db.Positions.ToList();
             positionList.Add(addPosition);
-            ViewBag.PositionList = positionList;
+            ViewBag.filterPosition = positionList;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Index(int filterStatus)
+        public ActionResult Index(int filterStatus, int filterPosition, string filterFN, string filterLN)
         {
             Status addStatus = new Status { TitleStatus = "Все", Id = -1 };
             List<Status> statusList = db.Statuses.ToList();
@@ -60,29 +37,34 @@ namespace ManagePeopleCompany.Controllers
             Position addPosition = new Position { TitlePosition = "Все", Id = -1 };
             List<Position> positionList = db.Positions.ToList();
             positionList.Add(addPosition);
-            ViewBag.PositionList = positionList;
+            ViewBag.filterPosition = positionList;
+            ViewBag.filterFN = filterFN;
+            ViewBag.filterLN = filterLN;
             return View();
         }
 
-        public ActionResult GetCandidates(int? filterStatus = null)
+        public ActionResult GetCandidates(int? filterStatus = null, int? filterPosition = null, string filterFN = null, string filterLN = null)
         {
-            var candidates = db.Candidates.Include(c => c.Employee).Include(c => c.Coming).Include(c => c.Connection).Include(c => c.Status).Include(c => c.Person); Status addStatus = new Status { TitleStatus = "Все", Id = -1 };
-            if (filterStatus != null && filterStatus != -1)
+            var candidates = db.Candidates.Include(c => c.Employee).Include(c => c.Coming).Include(c => c.Connection).Include(c => c.Status).Include(c => c.Person);
+            if (filterStatus != null && filterStatus >= 0)
             {
                 candidates = candidates.Where(c => c.StatusID == filterStatus);
             }
-            return View(candidates.ToList());
-        }
-
-        public PartialViewResult GetPeopleData(string selectedRole = "Все")
-        {
-            var candidates = db.Candidates.Include(c => c.Employee).Include(c => c.Coming).Include(c => c.Connection).Include(c => c.Status).Include(c => c.Person);
-            if (selectedRole != "Все")
+            if (filterPosition != null && filterPosition >= 0)
             {
-                Status selected = (Status)Enum.Parse(typeof(Status), selectedRole);
-                candidates = db.Candidates.Where(f => f.Status == selected);
+                candidates = candidates.Where(c => c.Person.PositionID == filterPosition);
             }
-            return PartialView(candidates);
+            if (filterFN != null)
+            {
+                candidates = candidates.Where(c => c.Person.FirstName.Contains(filterFN));
+            }
+
+            if (filterLN != null)
+            {
+                candidates = candidates.Where(c => c.Person.LastName.Contains(filterLN));
+            }
+
+            return View(candidates.ToList());
         }
 
         // GET: Candidates/Details/5

@@ -1,0 +1,27 @@
+﻿@model IEnumerable<ManagePeopleCompany.Models.Employee>
+@{
+    Layout = null;
+}
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Person.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Person.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateEnrollment)
+        </td>
+        <td>
+            <a href='@Url.Action("Edit", new { id = item.Id })'>
+                <img src='@Url.Content("~/images/edit.png")' height="30" width="30" />
+            </a> |
+            <a href='@Url.Action("Delete", new { id = item.Id })'>
+                <img src='@Url.Content("~/images/delete.png")' height="30" width="30" />
+            </a>
+        </td>
+    </tr>
+}

@@ -2,6 +2,11 @@
 @{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    AjaxOptions ajaxOptions = new AjaxOptions
+    {
+        UpdateTargetId = "people",
+        Url = Url.Action("GetPeople")
+    };
 }
 
 Welcome @HttpContext.Current.User.Identity.Name
@@ -16,70 +21,52 @@ Position @HttpContext.Current.Request.Cookies["positionUser"].Value
 }
 
 <h2>List People company</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            ФИО
-        </th>
-        <th>
-            Позиция
-        </th>
-        <th>
-            Опыт
-        </th>
-        <th>
-            Телефон
-        </th>
-        <th>
-            <p>Email</p>
-        </th>
-        <th>
-            Зарплата
-        </th>
-        <th>
-            <p>Skype</p>
-        </th>
-        <th>
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
+<div>
+    @using (Ajax.BeginForm(ajaxOptions))
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Position.TitlePosition)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Experience)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Skype)
-            </td>
-            <td>
-                <a href='@Url.Action("EditPeople", new { id = item.Id })'>
-                    <img src='@Url.Content("~/images/edit.png")' height="30" width="30" />
-                </a> |
-                <a href='@Url.Action("Delete", new { id = item.Id })'>
-                    <img src='@Url.Content("~/images/delete.png")' height="30" width="30" />
-                </a>
-            </td>
-        </tr>
-    }
+        @Html.DropDownList("filterPosition", new SelectList(ViewBag.filterPosition, "Id", "TitlePosition", -1), htmlAttributes: new { @class = "form-control" })
+        <input type="text" name="filterLN" value="@ViewBag.filterLN" placeholder="Найти по фамилии" />
+        <input type="text" name="filterFN" value="@ViewBag.filterFN" placeholder="Найти по имени" />
+        <button type="submit">Отобразить</button>
 
-</table>
+        <table class="table">
+            <tr>
+                <th>
+                    ФИО
+                </th>
+                <th>
+                    Позиция
+                </th>
+                <th>
+                    Опыт
+                </th>
+                <th>
+                    Телефон
+                </th>
+                <th>
+                    <p>Email</p>
+                </th>
+                @if (@HttpContext.Current.Request.Cookies["positionUser"].Value == "Менеждер")
+                {
+                    <th>
+                        Зарплата
+                    </th>
+                }
+                <th>
+                    <p>Skype</p>
+                </th>
+                @if (@HttpContext.Current.Request.Cookies["positionUser"].Value == "Менеждер")
+                {
+                    <th>
+                    </th>
+                }
+                </tr>
+            <tbody id="people">
+                @Html.Action("GetPeople")
+            </tbody>
+        </table>
+    }
+</div>
 <div>
     @Html.ActionLink("Add person", "CreatePerson", new { })
 </div>

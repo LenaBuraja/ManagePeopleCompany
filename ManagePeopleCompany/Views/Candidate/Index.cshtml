@@ -3,6 +3,10 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    AjaxOptions ajaxOptions = new AjaxOptions {
+        UpdateTargetId = "candidates",
+        Url = Url.Action("GetCandidates")
+    };
 }
 
 <h2>Index</h2>
@@ -11,9 +15,12 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 <div>
-    @using (Html.BeginForm())
+    @using (Ajax.BeginForm(ajaxOptions))
     {
         @Html.DropDownList("filterStatus", new SelectList(ViewBag.filterStatus, "Id", "TitleStatus", -1), htmlAttributes: new { @class = "form-control" })
+        @Html.DropDownList("filterPosition", new SelectList(ViewBag.filterPosition, "Id", "TitlePosition", -1), htmlAttributes: new { @class = "form-control" })
+        <input type="text" name="filterLN" value="@ViewBag.filterLN" placeholder="Найти по фамилии" />
+        <input type="text" name="filterFN" value="@ViewBag.filterFN" placeholder="Найти по имени" />
         <button type="submit">Отобразить</button>
         <table class="table">
             <tr>
@@ -41,86 +48,9 @@
                 <th></th>
             </tr>
 
-            <tbody>
+            <tbody id="candidates">
                 @Html.Action("GetCandidates")
             </tbody>
         </table>
     }
 </div>
-
-@*<form method="get">
-    <div>
-        @Html.DropDownList("StatusID", new SelectList(ViewBag.StatusesList, "Id", "TitleStatus", -1), htmlAttributes: new { @class = "form-control" })
-        @Html.DropDownList("PositionID", new SelectList(ViewBag.PositionList, "Id", "TitlePosition", -1), htmlAttributes: new { @class = "form-control" })
-        <button type="submit">Отобразить</button>
-    </div>
-</form>
-    <table class="table">
-        <tr>
-            <th>
-                ФИО
-            </th>
-            <th>
-                <p>HR</p>
-            </th>
-            <th>
-                Статус
-            </th>
-            <th>
-                Позиция
-            </th>
-            <th>
-                Опыт
-            </th>
-            <th>
-                ЗП
-            </th>
-            <th>
-                <p>Email</p>
-            </th>
-            <th></th>
-        </tr>
-
-        <tbody>
-            @Html.Action("GetCandidates")
-        </tbody>*@
-
-        @*@foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Person.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Employee.Person.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status.TitleStatus)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Person.Position.TitlePosition)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Person.Experience)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Person.Pay)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Person.Email)
-                </td>
-                <td>
-                    <a href='@Url.Action("Details", new { id = item.Id })'>
-                        <img src='@Url.Content("~/images/view.png")' height="30" width="30" />
-                    </a>
-                    <a href='@Url.Action("Edit", new { id = item.Id })'>
-                        <img src='@Url.Content("~/images/edit.png")' height="30" width="30" />
-                    </a>
-                    <a href='@Url.Action("Delete", new { id = item.Id })'>
-                        <img src='@Url.Content("~/images/delete.png")' height="30" width="30" />
-                    </a>
-                </td>
-            </tr>
-        }*@
-
-    </table>

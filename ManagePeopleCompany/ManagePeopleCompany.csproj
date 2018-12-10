@@ -242,6 +242,8 @@
     <Content Include="Views\User\Register.cshtml" />
     <Content Include="Views\User\VerifyAccount.cshtml" />
     <Content Include="Views\Candidate\GetCandidates.cshtml" />
+    <Content Include="Views\Employee\GetEmployees.cshtml" />
+    <Content Include="Views\Home\GetPeople.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -17,10 +17,45 @@ namespace ManagePeopleCompany.Controllers
         // GET: Employees
         public ActionResult Index()
         {
-            var employee = db.Employees.Include(e => e.Person);
-            return View(employee.ToList());
+            Position addPosition = new Position { TitlePosition = "Все", Id = -1 };
+            List<Position> positionList = db.Positions.ToList();
+            positionList.Add(addPosition);
+            ViewBag.filterPosition = positionList;
+            return View();
         }
-        
+
+        [HttpPost]
+        public ActionResult Index(int filterPosition, string filterFN, string filterLN)
+        {
+            Position addPosition = new Position { TitlePosition = "Все", Id = -1 };
+            List<Position> positionList = db.Positions.ToList();
+            positionList.Add(addPosition);
+            ViewBag.filterPosition = positionList;
+            ViewBag.filterFN = filterFN;
+            ViewBag.filterLN = filterLN;
+            return View();
+        }
+
+        public ActionResult GetEmployees(int? filterPosition = null, string filterFN = null, string filterLN = null)
+        {
+            var employees = db.Employees.Include(c => c.Person);
+            if (filterPosition != null && filterPosition >= 0)
+            {
+                employees = employees.Where(c => c.Person.PositionID == filterPosition);
+            }
+            if (filterFN != null)
+            {
+                employees = employees.Where(c => c.Person.FirstName.Contains(filterFN));
+            }
+
+            if (filterLN != null)
+            {
+                employees = employees.Where(c => c.Person.LastName.Contains(filterLN));
+            }
+
+            return View(employees.ToList());
+        }
+
         // GET: Employees/Details/5
         public ActionResult Details(int? id)
         {
